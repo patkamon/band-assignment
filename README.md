@@ -1,7 +1,7 @@
 # band-assignment
 
 
-# 1. Boss Baby's Revenge
+# Boss Baby's Revenge
 time complexity is O(N) since we loop through input for 1 iteration
 memory complexity is O(1) since it use only 1 variable (shot) to keep track of all progress
 
@@ -43,4 +43,4 @@ to run
 - monitor transaction status (by loop)
 - handle message for each status
 - CLI (command line interface)
-- cache, prevent to much request
+- cache, prevent too much request
