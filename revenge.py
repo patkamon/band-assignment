@@ -1,4 +1,4 @@
-# time complexity of O(N) since it loop through string one time.
+# time complexity of O(N) since we loop through string one time.
 
 def revenge(string):
     shot = 0

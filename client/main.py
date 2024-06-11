@@ -8,8 +8,6 @@ def cls():
 
 client = TransactionClient("https://mock-node-wgqbnxruha-as.a.run.app")
 
-print(client.conduct_payload("ETH", 1000))
-
 
 while True:
     # Command line interface (CLI)
