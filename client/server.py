@@ -6,6 +6,7 @@ class TransactionClient:
     def __init__(self, server_url):
         self.server_url = server_url # server url
         self.history = [] # keep tx history in here
+        self.memory = {} # cache
 
     # broadcast transaction
     def broadcast_transaction(self, transaction_data):
@@ -17,7 +18,11 @@ class TransactionClient:
             raise Exception(f"Failed to broadcast transaction: {response.text}")
 
     # check transaction status
-    def check_status(self, tx_hash):
+    def __check_status(self, tx_hash):
+        # memory cache
+        if self.memory.get(tx_hash) != None:
+            return self.memory.get(tx_hash)
+
         response = requests.get(f"{self.server_url}/check/{tx_hash}")
         if response.status_code == 200:
             return response.json()["tx_status"]
@@ -25,10 +30,10 @@ class TransactionClient:
             raise Exception(f"Failed to check status: {response.text}")
 
     # monitor transaction
-    def monitor_transaction(self, transaction_id, interval=5):
+    def monitor_transaction(self, tx_hash, interval=5):
         while True:
-            status = self.check_status(transaction_id)
-            print(f"Transaction {transaction_id} status: {status}")
+            status = self.__check_status(tx_hash)
+            print(f"Transaction {tx_hash} status: {status}")
             if status != "PENDING":
                 if status == "CONFIRMED":
                     print("Transaction finalized.")
@@ -37,6 +42,8 @@ class TransactionClient:
                 elif status == "FAILED": # failed
                     print("Transaction failed!")
                     print("Please wait for a moment and try again!")
+                # store in cache
+                self.memory["tx_hash"] = status
                 break
             time.sleep(interval)
 
